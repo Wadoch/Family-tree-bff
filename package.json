@@ -1,0 +1,19 @@
+{
+  "name": "family-tree-bff",
+  "version": "1.0.0",
+  "description": "Bff for family tree",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wadoch/Family-tree-bff.git"
+  },
+  "author": "Dominik 'Wadoch' Wadowski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wadoch/Family-tree-bff/issues"
+  },
+  "homepage": "https://github.com/Wadoch/Family-tree-bff#readme"
+}
