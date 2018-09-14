@@ -5,5 +5,8 @@
         "routes": {
             "cors": true
         }
+    },
+    "mongodb": {
+        "url": "mongodb://localhost:27017/family-tree-database"
     }
 }

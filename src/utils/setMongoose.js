@@ -1,0 +1,9 @@
+const mongoose = require('mongoose');
+const config = require('config');
+
+mongoose.connect(config.get('mongodb.url'), {useNewUrlParser: true})
+    .catch((err) => console.log(err));
+
+mongoose.connection.once('open', () => console.log('Successfully connected to database'));
+
+module.exports = mongoose;
