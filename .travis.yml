@@ -27,6 +27,7 @@ install:
 - yarn install
 
 script:
+- echo $MONGODB_DATABASE
 - yarn run test
 
 deploy:
