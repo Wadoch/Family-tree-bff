@@ -19,21 +19,23 @@ env:
     - secure: "zw5TjO49i5O3zHACNl5nPrhxL2ahifI42EOv195fr3jJ7g6q52iH/CCdifWfP1dYLYPBbKKoYMGHMaOjoUL6L8yWFVZuobmGNgmcx8JCZkHhnavOimM6sodD94lwbxfBfkKr+NFWCIb3F4JfKT5D4WTo1LhlH2X0XOz+hOBzd/CkYTVmGiS0reTrlaK2cDR34F8EZbtov1iEfR1yVb5r5FwkjFw/3uFy9+f6LtzBPJordQo5F6TxTSdjB5/8bymXnjyClmL8YeYbgbaoC2C2Ntu4bH46IAcWjjO+99T+HGmyAHLNYexm3Sxoyeo6EWJnAmOZUq/HinEPXgtTAHknNk2twWJT8phxaNtLhPT+A1iziHii9vN4SYWH+FSkuRR8MA+izhRp+2Rsg531TWQ8SPG2eODrT/3ch2XOjFPPOWjhN8cKkm5cF3uMze6ZAldfV0J/XHbQuBFKPb98PuQ6sF1QUb4HEKfhvTVQvbL1uhtjFbRARetrf5X0ZZogbTAZHAW19D1NM9uKCY7NQaQU/dXkIILnEJ2FUq3XeuzfdHpUzEFd+fFQFPhqP904cMlS3r61hBf5rldJ7pEzWV4XGQjga6eZnTiUPtwkGSkeixaEjqdtg+bGey80Nv1fl55O+GzY1+8T/2yQyhT2aJwgmnqhooZwDvGJsmKDf/xKlk8="
 
 before_install:
-- curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.9.4
-- export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-- printf 'yarn-offline-mirror "./.yarn-offline-mirror"\n--production false\n--pure-lockfile true' >> .yarnrc
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.9.4
+  - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+  - printf 'yarn-offline-mirror "./.yarn-offline-mirror"\n--production false\n--pure-lockfile true' >> .yarnrc
 
 install:
-- yarn install
+  - yarn install
 
 script:
-- echo $MONGODB_DATABASE
-- yarn run test
+  - yarn run test
+
+before_deploy:
+  - node infrastructure/config.js
 
 deploy:
   provider: heroku
   api_key:
-    secure: Yzc3ndN0QDeBLwLIofMIrSNqmHq0kssjDd+P6SPK01jnx19H8qq0jnpLXfQgtasfpTb+ys36kQ33NCc7Fv0hAn5CDdPTDt7h1x8bie9pHzm5oyW3MtsVtqo7BWTjkuJiUxY0ouS2g0e3F2zYFw0eb9EBMzlDfqLT/7uVqstm4QIoBPlvvMrtKRrTbheT4ya5q5qrWaC+kpepoAAOrDMyUdDGciId75j0u3Fe4xjlBvqMP/wJASGXoi5T9zvmOoqGRjvaUi/Ch8BvGX7Tl+ZYtJbP/eUEYlJf1dp5Fp/hDjBfLMT7blPqp3KDdcSdWuapqTT3OmryfuQD8d5MWi6TxJBznxizC74vlTpL665j06AC3lJyeuIGxkjw9MZ0cwI/O8ib42l0hj7LRuVGhfEq+U7Q8ADG4RI51pGRzS6s1CKvRUZNlw1cELGolVuOMXwuzK1aAozB/ORoNTAflMXV3Vra/NKJlgfsL0LGG5aNd5TJKciahpSMvq6Hh+aeFlvyVEqHYq1XpeNZ/H5o9io3pu9xzypG1CR7StOVsZRhk8xA/pw4a9Ms73MCRvf/3j6zQZheTF/44Ii8K/A35Bre4TcDsx8dZRVa5alR6Spp7U4duTDm69n3BkoehDKm9DjnqaJ5Q1sQAT3cFke1Dkt1h1WMW9j77qQkRQwtjcRX2XY=
+    secure: S2e2ne9ze1DKQIRqG5xFnKeSps7uRY0QAo7mlG21M6plRnmZuj3GWnvCVSb0xk2VrVLanMqhiRRXYedxw767KqFX5/dW3z+LQo0omLXDMFPaTKkUjqJJtCGgf0sNFLA4iKcsJ58XATfwpJAu4y2c6xF3Jct9rldYSRE/dAZDp/zxUoLEAZnHiye2jEAwAzooYvcavdDnmUhlErnBluFlbNsqpPWTNgLPc/CI7ZXSy0txfDRqwX1R3MeICaC9RuuMtKPm/WXZhNwjPwnB8m3dWNV7c/P9HlUq/nRbe6/hGuCTM3S1misp61mbpiJ5UwePqEmecDU/ZQ6+d8KrXaMjlFWthgrIC2277D7tX09Dfwlj/94KxjFOIgv+yJf7To5fe2NTpxC675tKvXmQW4w/+IDn7qYVl9PMXWNmgG4ZzmKlZVAEmAL+uTW+GwE5GmRRsQ69tpUBXqZd6LoroZEL0K5dYTu9XXmo0lLuT72GCQ5s6ftoaWNl6KF4pmxxULzGw0Gn/Y/TqZhHP7gVxmNHufJ/RpzHg9KVPaUzs4eqwXc7dvlilF7+4oBAdUnvwEPivn2mO+FpEGnmTyghWLX+WKzY/ipaHR7Sq+UwJYDg7LqZpJ3IQxNDgHv0tCeE5rF/uOcY0gV66zvgfBqm0A+eCyw7BFQbf83lGkH5hzguJ/w=
   skip-cleanup: true
   on:
     branch: master
