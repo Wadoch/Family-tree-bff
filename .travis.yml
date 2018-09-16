@@ -27,7 +27,6 @@ install:
 - yarn install
 
 script:
-  - yarn run build
 
 deploy:
   provider: heroku
