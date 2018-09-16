@@ -1,7 +1,7 @@
 const Hapi = require('hapi');
 const config = require('config');
 
-const mongoose = require('./src/utils/setMongoose');
+require('./src/database/utils/setMongoose');
 
 const apiRoutes = require('./src/api');
 
