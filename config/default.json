@@ -8,5 +8,10 @@
     },
     "mongodb": {
         "url": "mongodb://localhost:27017/family-tree-database"
+    },
+    "decryptUserData": {
+        "hashType": "aes256",
+        "inputEncoding": "base64",
+        "outputEmcoding": "utf8"
     }
 }

@@ -1,9 +1,21 @@
 const { registerHandler } = require('../handlers/registerHandler');
+const { registerSchema, errorSchema } = require('../schemas');
 
 module.exports = [
     {
-        method: 'GET',
+        method: 'POST',
         path: '/register',
-        handler: registerHandler,
+        config: {
+            description: 'register endpoint',
+            notes: 'Add new user to database',
+            handler: registerHandler,
+            response: {
+                status: {
+                    200: registerSchema.response,
+                    400: errorSchema,
+                    500: errorSchema,
+                }
+            }
+        }
     }
 ];
