@@ -11,7 +11,7 @@ module.exports = [
             handler: registerHandler,
             response: {
                 status: {
-                    200: registerSchema.response,
+                    // 200: registerSchema.response,
                     400: errorSchema,
                     500: errorSchema,
                 }

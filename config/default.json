@@ -11,7 +11,7 @@
     },
     "decryptUserData": {
         "hashType": "aes256",
-        "inputEncoding": "base64",
+        "inputEncoding": "hex",
         "outputEmcoding": "utf8"
     }
 }

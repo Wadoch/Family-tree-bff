@@ -14,8 +14,9 @@ const decryptData = (data, { hashType, key, iv, outputEncoding, inputEncoding })
     return (decipher.update(data, inputEncoding, outputEncoding) + decipher.final(outputEncoding));
 };
 
-const decryptUserData = (data) => {
-    return decryptData(data, get(config, 'decryptUserData'));
-};
+const decryptUserData = (data) => decryptData(data, get(config, 'decryptUserData'));
+
+const encryptUserData = (data) => encryptData(data, get(config, 'decryptUserData'));
 
 module.exports.decryptUserData = decryptUserData;
+module.exports.encryptUserData = encryptUserData;

@@ -4,7 +4,7 @@
     "description": "Bff for family tree",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon server.js",
+        "start": "nodemon $NODE_DEBUG_OPTION server.js",
         "database": "mongod --dbpath=../family-tree-database",
         "test": "echo \"Error: no test specified\" && exit 0"
     },
