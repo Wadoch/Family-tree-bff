@@ -3,7 +3,7 @@ const uuid = require('uuid/v1');
 const bcrypt = require('bcrypt');
 
 const { User } = require('../../database/models');
-const { decryptUserData } = require('../../utils/userDataResolver');
+const { decryptUserData } = require('../../utils/userResolver');
 
 const getUserData = ({usernameHash, passwordHash, emailHash}) => ({
     username: decryptUserData(usernameHash),
@@ -29,18 +29,9 @@ const addNewUser = async (userData) => (
 );
 
 module.exports.registerHandler = async (request, h) => {
-    const userData = getUserData(request.payload);
-    let responseData;
 
-    try{
-        responseData = await addNewUser(userData);
-    }
-    catch(err) {
-        if(err.code === 11000){
-            return Boom.badRequest('User already exist');
-        }
-        return err;
-    }
+    const userData = getUserData(request.payload);
+    const responseData = await addNewUser(userData);
 
     return h.response({
         statusCode: 200,

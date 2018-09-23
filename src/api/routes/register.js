@@ -1,6 +1,6 @@
 const { registerHandler } = require('../handlers/registerHandler');
-const { registerSchema, errorSchema } = require('../schemas');
-// const verifyUniqueUser = require('../../utils/verifyUniqueUser');
+const { errorSchema } = require('../schemas');
+const { verifyUniqueUser } = require('../../utils/userResolver');
 
 module.exports = [
     {
@@ -11,7 +11,7 @@ module.exports = [
             notes: 'Add new user to database',
             auth: false,
             pre: [
-                // { method: verifyUniqueUser },
+                { method: verifyUniqueUser },
             ],
             handler: registerHandler,
             response: {
