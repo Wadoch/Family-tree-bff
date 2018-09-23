@@ -26,6 +26,7 @@
         "hapi-auth-jwt2": "^8.1.0",
         "heroin-js": "^1.21.0",
         "joi": "^13.6.0",
+        "jsonwebtoken": "^8.3.0",
         "lodash": "^4.17.11",
         "mongoose": "^5.2.14",
         "nodemon": "^1.18.4",

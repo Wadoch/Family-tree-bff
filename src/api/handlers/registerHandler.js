@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 
 const { User } = require('../../database/models');
 const { decryptUserData } = require('../../utils/userResolver');
+const { createJWT } = require('../../utils/jwtGenerator');
 
 const getUserData = ({usernameHash, passwordHash, emailHash}) => ({
     username: decryptUserData(usernameHash),
@@ -32,11 +33,15 @@ module.exports.registerHandler = async (request, h) => {
 
     const userData = getUserData(request.payload);
     const responseData = await addNewUser(userData);
-
+    const token = createJWT({ userId: responseData.userId, username: responseData.username });
+    console.log(token);
     return h.response({
         statusCode: 200,
         message: 'User successfully registered',
         registered: true,
-        data: responseData,
+        data: {
+            user: responseData,
+            idToken: token,
+        },
     });
 };

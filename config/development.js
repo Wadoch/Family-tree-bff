@@ -5,4 +5,7 @@ module.exports = {
         iv: 'xQW7JoNsEwZyhT7h',
         salt: 'wR7gq4LWGwiLPHXo',
     },
+    jwt: {
+        secretKey: '6ByTnfIqRH5gF5t5',
+    },
 };

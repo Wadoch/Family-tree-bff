@@ -6,9 +6,6 @@
             "cors": true
         }
     },
-    "jwt": {
-        "secretKey": "6ByTnfIqRH5gF5t5"
-    },
     "mongodb": {
         "url": "mongodb://localhost:27017/family-tree-database"
     },
