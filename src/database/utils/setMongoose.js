@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('config');
 
+mongoose.set('useCreateIndex', true);
 mongoose.connect(config.get('mongodb.url'), {useNewUrlParser: true})
     .catch((err) => console.log(err));
 

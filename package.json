@@ -19,9 +19,11 @@
     },
     "homepage": "https://github.com/Wadoch/Family-tree-bff#readme",
     "dependencies": {
+        "bcrypt": "^3.0.1",
         "boom": "^7.2.0",
         "config": "^2.0.1",
         "hapi": "^17.5.4",
+        "hapi-auth-jwt2": "^8.1.0",
         "heroin-js": "^1.21.0",
         "joi": "^13.6.0",
         "lodash": "^4.17.11",

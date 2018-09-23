@@ -1,5 +1,6 @@
 const { registerHandler } = require('../handlers/registerHandler');
 const { registerSchema, errorSchema } = require('../schemas');
+// const verifyUniqueUser = require('../../utils/verifyUniqueUser');
 
 module.exports = [
     {
@@ -8,10 +9,13 @@ module.exports = [
         config: {
             description: 'register endpoint',
             notes: 'Add new user to database',
+            auth: false,
+            pre: [
+                // { method: verifyUniqueUser },
+            ],
             handler: registerHandler,
             response: {
                 status: {
-                    // 200: registerSchema.response,
                     400: errorSchema,
                     500: errorSchema,
                 }

@@ -1,13 +1,9 @@
 const Boom = require('boom');
 const uuid = require('uuid/v1');
+const bcrypt = require('bcrypt');
 
-const {
-    User,
-} = require('../../database/models');
-
-const {
-    decryptUserData,
-} = require('../../utils/userDataResolver');
+const { User } = require('../../database/models');
+const { decryptUserData } = require('../../utils/userDataResolver');
 
 const getUserData = ({usernameHash, passwordHash, emailHash}) => ({
     username: decryptUserData(usernameHash),
@@ -16,36 +12,40 @@ const getUserData = ({usernameHash, passwordHash, emailHash}) => ({
     userId: null,
 });
 
-const addNewUser = async (userData) => {
-    const {username, password, email} = userData;
-    userData.userId = uuid();
+const hashPassword = (password) => (bcrypt.hashSync(password, 10));
 
-    const newUser = new User({
-        userId: userData.userId,
+const getUserModelFromData = ({username, password, email}) => (
+    new User({
+        userId: uuid(),
         username: username,
-        password: password,
+        password: hashPassword(password),
         email: email,
-    });
+}));
 
-    return newUser.save().catch(err => {throw err});
-};
+const addNewUser = async (userData) => (
+    getUserModelFromData(userData)
+        .save()
+        .catch(err => {throw err})
+);
 
 module.exports.registerHandler = async (request, h) => {
     const userData = getUserData(request.payload);
+    let responseData;
 
     try{
-        await addNewUser(userData);
+        responseData = await addNewUser(userData);
     }
     catch(err) {
         if(err.code === 11000){
-            return Boom.badData('User already exist');
+            return Boom.badRequest('User already exist');
         }
         return err;
     }
+
     return h.response({
         statusCode: 200,
         message: 'User successfully registered',
         registered: true,
-        data: userData,
+        data: responseData,
     });
 };
