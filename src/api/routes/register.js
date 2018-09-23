@@ -1,5 +1,5 @@
 const { registerHandler } = require('../handlers/registerHandler');
-const { errorSchema } = require('../schemas');
+const { registerSchema, errorSchema } = require('../schemas');
 const { verifyUniqueUser } = require('../../utils/userResolver');
 
 module.exports = [
@@ -16,6 +16,7 @@ module.exports = [
             handler: registerHandler,
             response: {
                 status: {
+                    200: registerSchema.response.data,
                     400: errorSchema,
                     500: errorSchema,
                 }

@@ -34,13 +34,14 @@ module.exports.registerHandler = async (request, h) => {
     const userData = getUserData(request.payload);
     const responseData = await addNewUser(userData);
     const token = createJWT({ userId: responseData.userId, username: responseData.username });
-    console.log(token);
+
     return h.response({
         statusCode: 200,
         message: 'User successfully registered',
         registered: true,
         data: {
-            user: responseData,
+            userId: responseData.userId,
+            username: responseData.username,
             idToken: token,
         },
     });
