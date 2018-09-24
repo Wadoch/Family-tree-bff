@@ -1,21 +1,10 @@
 const Boom = require('boom');
 const bcrypt = require('bcrypt');
-const crypto = require('crypto-js');
-const config = require('config');
 
 const { User } = require('../database/models');
+const { decryptAuthPassword } = require('./crypto');
 
-const encryptData = (data) => {
-    return crypto.AES.encrypt(data, config.get('decryptUserData.key')).toString();
-};
-
-const decryptData = (data) => {
-    const bytes  = crypto.AES.decrypt(data, config.get('decryptUserData.key'));
-
-    return bytes.toString(crypto.enc.Utf8);
-};
-
-const decryptPassword = (req) => decryptData(req.payload.password);
+const decryptPassword = (req) => decryptAuthPassword(req.payload.password);
 
 const verifyUniqueUser = async (req) => {
     try{

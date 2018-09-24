@@ -1,10 +1,8 @@
 const uuid = require('uuid/v1');
-const bcrypt = require('bcrypt');
 
 const { User } = require('../../database/models');
 const { createJWT } = require('../../utils/jwtGenerator');
 
-const hashPassword = (password) => (bcrypt.hashSync(password, 10));
 
 const getUserData = ({username, password, email}) => ({
     username: username,
