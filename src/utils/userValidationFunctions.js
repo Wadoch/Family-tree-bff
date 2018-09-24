@@ -1,9 +1,23 @@
 const Boom = require('boom');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto-js');
+const config = require('config');
 
 const { User } = require('../database/models');
 
-const verifyUniqueUser = async (req, res) => {
+const encryptData = (data) => {
+    return crypto.AES.encrypt(data, config.get('decryptUserData.key')).toString();
+};
+
+const decryptData = (data) => {
+    const bytes  = crypto.AES.decrypt(data, config.get('decryptUserData.key'));
+
+    return bytes.toString(crypto.enc.Utf8);
+};
+
+const decryptPassword = (req) => decryptData(req.payload.password);
+
+const verifyUniqueUser = async (req) => {
     try{
         const {username, email} = req.payload;
 
@@ -18,20 +32,21 @@ const verifyUniqueUser = async (req, res) => {
             if(username === foundUser.username) {
                 return Boom.badRequest('User with this username already exist');
             }
-            if(username === foundUser.email) {
+            if(email === foundUser.email) {
                 return Boom.badRequest('User with this email already exist');
             }
         }
 
         return req.payload;
     } catch (err) {
+        console.log(err);
         throw err;
     }
 };
 
-const verifyCredentials = async (req, h) => {
+const verifyCredentials = async (req) => {
     try {
-        const { password } = req.payload;
+        const password = req.pre.password;
 
         const foundUser = await User.findOne({
             $or: [
@@ -49,11 +64,12 @@ const verifyCredentials = async (req, h) => {
         }
 
         return foundUser;
-        // return req.payload;
     } catch (err) {
+        console.log(err);
         throw err;
     }
 };
 
 module.exports.verifyUniqueUser = verifyUniqueUser;
 module.exports.verifyCredentials = verifyCredentials;
+module.exports.decryptPassword = decryptPassword;

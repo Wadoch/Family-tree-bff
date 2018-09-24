@@ -24,7 +24,10 @@ const getUserModelFromData = ({username, password, email}) => (
 const addNewUser = async (userData) => (
     getUserModelFromData(userData)
         .save()
-        .catch(err => {throw err})
+        .catch(err => {
+            console.log(err);
+            throw err;
+        })
 );
 
 module.exports.registerHandler = async (request, h) => {

@@ -1,6 +1,10 @@
 const { registerHandler, authenticateHandler } = require('../handlers/authenticationHandler');
 const { authenticationSchema, errorSchema } = require('../schemas');
-const { verifyUniqueUser, verifyCredentials } = require('../../utils/userCheckFunctions');
+const {
+    verifyUniqueUser,
+    verifyCredentials,
+    decryptPassword,
+} = require('../../utils/userValidationFunctions');
 
 module.exports = [
     {
@@ -11,6 +15,7 @@ module.exports = [
             notes: 'Add new user to database',
             auth: false,
             pre: [
+                { method: decryptPassword, assign: 'password' },
                 { method: verifyUniqueUser },
             ],
             handler: registerHandler,
@@ -31,7 +36,8 @@ module.exports = [
             notes: 'Authenticate user',
             auth: false,
             pre: [
-                { method: verifyCredentials , assign: 'user' },
+                { method: decryptPassword, assign: 'password' },
+                { method: verifyCredentials, assign: 'user' },
             ],
             validate: {
                 payload: authenticationSchema.request.auth
