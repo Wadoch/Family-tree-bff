@@ -1,7 +1,7 @@
 const errorSchema = require('./errorSchema');
-const registerSchema = require('./registerSchema');
+const authenticationSchema = require('./authenticationSchema');
 
 module.exports = {
     errorSchema,
-    registerSchema,
+    authenticationSchema,
 };

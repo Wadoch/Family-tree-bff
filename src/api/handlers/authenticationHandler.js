@@ -1,26 +1,24 @@
-const Boom = require('boom');
 const uuid = require('uuid/v1');
 const bcrypt = require('bcrypt');
 
 const { User } = require('../../database/models');
-const { decryptUserData } = require('../../utils/userResolver');
 const { createJWT } = require('../../utils/jwtGenerator');
 
-const getUserData = ({usernameHash, passwordHash, emailHash}) => ({
-    username: decryptUserData(usernameHash),
-    password: decryptUserData(passwordHash),
-    email: decryptUserData(emailHash),
+const hashPassword = (password) => (bcrypt.hashSync(password, 10));
+
+const getUserData = ({username, password, email}) => ({
+    username: username,
+    password: hashPassword(password),
+    email: email,
     userId: null,
 });
-
-const hashPassword = (password) => (bcrypt.hashSync(password, 10));
 
 const getUserModelFromData = ({username, password, email}) => (
     new User({
         userId: uuid(),
-        username: username,
-        password: hashPassword(password),
-        email: email,
+        username,
+        password,
+        email,
 }));
 
 const addNewUser = async (userData) => (
@@ -30,19 +28,30 @@ const addNewUser = async (userData) => (
 );
 
 module.exports.registerHandler = async (request, h) => {
-
     const userData = getUserData(request.payload);
     const responseData = await addNewUser(userData);
+
     const token = createJWT({ userId: responseData.userId, username: responseData.username });
 
     return h.response({
         statusCode: 200,
         message: 'User successfully registered',
-        registered: true,
+        authenticated: true,
         data: {
-            userId: responseData.userId,
-            username: responseData.username,
-            idToken: token,
+            idToken: token
         },
     });
+};
+
+module.exports.authenticateHandler = async (request, h) => {
+    const { username, userId } = request.pre.user;
+
+    return h.response({
+        statusCode: 200,
+        message: 'User successfully authenticated',
+        authenticated: true,
+        data: {
+            idToken: createJWT({ userId, username}),
+        }
+    })
 };
