@@ -5,13 +5,16 @@ const {
 } = require('../../database/models');
 
 const jwtValidate = async (decoded, request) => {
-    const response = {};
+    const response = { isValid: false };
 
-    User.findOne({username: decoded.username, userId: decoded.userId}, (err, docs) => {
-        if(err) return err;
+    try {
+        await User.findOne({username: decoded.username, userId: decoded.userId}).exec();
 
-        response.isValid = !!docs;
-    });
+        response.isValid = true;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
 
     return response;
 };

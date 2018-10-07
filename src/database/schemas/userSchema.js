@@ -19,6 +19,16 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    status: {
+        type: String,
+        lowercase: true,
+        default: 'user',
+        enum: ['user', 'admin'],
+    },
+    registerData: {
+        type: Date,
+        default: Date.now,
     }
 }, {
     collection: 'users',
