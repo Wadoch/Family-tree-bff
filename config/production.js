@@ -11,4 +11,7 @@ module.exports = {
         iv: process.env.DECRYPT_USER_DATA_IV,
         salt: process.env.DECRYPT_USER_DATA_SALT,
     },
+    jwt: {
+        secretKey: process.env.JWT_SECRET_KEY,
+    }
 };
