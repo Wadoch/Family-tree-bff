@@ -3,9 +3,7 @@
         "host": "localhost",
         "port": 8000,
         "routes": {
-            "cors": {
-                "origin": ["https://ps-family-tree-bff.herokuapp.com"]
-            }
+            "cors": true
         }
     },
     "mongodb": {

@@ -2,6 +2,11 @@ module.exports = {
     server: {
         host: '0.0.0.0',
         port: process.env.PORT || 8000,
+        routes: {
+            cors: {
+                origin: [ "https://ps-family-tree-bff.herokuapp.com" ]
+            }
+        }
     },
     mongodb: {
         url: process.env.MONGODB_DATABASE,

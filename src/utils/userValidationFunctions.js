@@ -1,5 +1,7 @@
 const Boom = require('boom');
 const bcrypt = require('bcrypt');
+const JWT = require('jsonwebtoken');
+const config = require('config');
 
 const { User } = require('../database/models');
 const { decryptAuthPassword } = require('./crypto');
@@ -59,6 +61,18 @@ const verifyCredentials = async (req) => {
     }
 };
 
+const verifyJWT = async (req) => {
+    const { userToken } = req.payload;
+
+    const { userId, username } = JWT.verify(userToken, config.get('jwt.secretKey'));
+
+    return {
+        userId,
+        username
+    };
+};
+
 module.exports.verifyUniqueUser = verifyUniqueUser;
 module.exports.verifyCredentials = verifyCredentials;
 module.exports.decryptPassword = decryptPassword;
+module.exports.verifyJWT = verifyJWT;

@@ -4,6 +4,7 @@ const {
     verifyUniqueUser,
     verifyCredentials,
     decryptPassword,
+    verifyJWT,
 } = require('../../utils/userValidationFunctions');
 
 module.exports = [
@@ -50,6 +51,19 @@ module.exports = [
                     500: errorSchema,
                 }
             }
+        }
+    },
+    {
+        method: 'POST',
+        path: '/verify',
+        config: {
+            description: 'user verify his JWT',
+            notes: 'Verify JWT',
+            auth: false,
+            pre: [
+                { method: verifyJWT, assign: 'user' }
+            ],
+            handler: authenticateHandler,
         }
     }
 ];
