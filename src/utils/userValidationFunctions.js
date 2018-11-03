@@ -64,12 +64,16 @@ const verifyCredentials = async (req) => {
 const verifyJWT = async (req) => {
     const { userToken } = req.payload;
 
-    const { userId, username } = JWT.verify(userToken, config.get('jwt.secretKey'));
+    const decoded = JWT.verify(userToken, config.get('jwt.secretKey'));
+    const {userId, username} = decoded;
 
-    return {
-        userId,
-        username
-    };
+    if(userId)
+        return {
+            userId,
+            username
+        };
+    else
+        return Boom.badRequest('Wrong JWT');
 };
 
 module.exports.verifyUniqueUser = verifyUniqueUser;

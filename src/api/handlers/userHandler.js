@@ -1,7 +1,7 @@
 const { User } = require('../../database/models');
 
 const meHandler = (req, h) => {
-    const foundUser = User.findOne({})
+    const foundUser = User.findOne({});
 
     return h.response();
 };
