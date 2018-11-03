@@ -31,7 +31,7 @@ const verifyUniqueUser = async (req) => {
         return req.payload;
     } catch (err) {
         console.log(err);
-        throw err;
+        return Boom.badRequest(err);
     }
 };
 
@@ -56,8 +56,7 @@ const verifyCredentials = async (req) => {
 
         return foundUser;
     } catch (err) {
-        console.log(err);
-        throw err;
+        return Boom.badRequest(err);
     }
 };
 

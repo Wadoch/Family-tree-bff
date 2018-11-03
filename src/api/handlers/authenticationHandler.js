@@ -1,4 +1,5 @@
 const uuid = require('uuid/v1');
+const Boom = require('boom');
 const { hashPassword }= require("../../utils/crypto");
 
 const { User } = require('../../database/models');
@@ -32,18 +33,22 @@ const addNewUser = async (userData) => (
 
 module.exports.registerHandler = async (request, h) => {
     const userData = getUserData(request.payload);
-    const responseData = await addNewUser(userData);
+    try {
+        const responseData = await addNewUser(userData);
+        const token = createJWT({ userId: responseData.userId, username: responseData.username });
 
-    const token = createJWT({ userId: responseData.userId, username: responseData.username });
+        return h.response({
+            statusCode: 200,
+            message: 'User successfully registered',
+            authenticated: true,
+            data: {
+                idToken: token
+            },
+        });
+    } catch (err) {
+        return Boom.badRequest(err);
+    }
 
-    return h.response({
-        statusCode: 200,
-        message: 'User successfully registered',
-        authenticated: true,
-        data: {
-            idToken: token
-        },
-    });
 };
 
 module.exports.authenticateHandler = async (request, h) => {
