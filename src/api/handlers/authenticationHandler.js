@@ -1,4 +1,5 @@
 const uuid = require('uuid/v1');
+const { hashPassword }= require("../../utils/crypto");
 
 const { User } = require('../../database/models');
 const { createJWT } = require('../../utils/jwtGenerator');
