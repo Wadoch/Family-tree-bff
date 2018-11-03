@@ -4,6 +4,7 @@ const configurator = heroin(process.env.HEROKU_API_TOKEN);
 
 const copyEnvs = [
     'MONGODB_DATABASE',
+    'JWT_SECRET_KEY',
 ];
 
 const baseEnvs = copyEnvs.reduce((all, current) =>
