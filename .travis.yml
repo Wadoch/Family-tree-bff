@@ -47,7 +47,7 @@ before_deploy:
 deploy:
   provider: heroku
   api_key:
-    secure: S2e2ne9ze1DKQIRqG5xFnKeSps7uRY0QAo7mlG21M6plRnmZuj3GWnvCVSb0xk2VrVLanMqhiRRXYedxw767KqFX5/dW3z+LQo0omLXDMFPaTKkUjqJJtCGgf0sNFLA4iKcsJ58XATfwpJAu4y2c6xF3Jct9rldYSRE/dAZDp/zxUoLEAZnHiye2jEAwAzooYvcavdDnmUhlErnBluFlbNsqpPWTNgLPc/CI7ZXSy0txfDRqwX1R3MeICaC9RuuMtKPm/WXZhNwjPwnB8m3dWNV7c/P9HlUq/nRbe6/hGuCTM3S1misp61mbpiJ5UwePqEmecDU/ZQ6+d8KrXaMjlFWthgrIC2277D7tX09Dfwlj/94KxjFOIgv+yJf7To5fe2NTpxC675tKvXmQW4w/+IDn7qYVl9PMXWNmgG4ZzmKlZVAEmAL+uTW+GwE5GmRRsQ69tpUBXqZd6LoroZEL0K5dYTu9XXmo0lLuT72GCQ5s6ftoaWNl6KF4pmxxULzGw0Gn/Y/TqZhHP7gVxmNHufJ/RpzHg9KVPaUzs4eqwXc7dvlilF7+4oBAdUnvwEPivn2mO+FpEGnmTyghWLX+WKzY/ipaHR7Sq+UwJYDg7LqZpJ3IQxNDgHv0tCeE5rF/uOcY0gV66zvgfBqm0A+eCyw7BFQbf83lGkH5hzguJ/w=
+    secure: $HEROKU_API_TOKEN
   skip-cleanup: true
   on:
     branch: master
