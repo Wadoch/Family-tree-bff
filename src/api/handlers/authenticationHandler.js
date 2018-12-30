@@ -29,7 +29,6 @@ const addNewUser = async (userData) => (
             throw err;
         })
 );
-// TODO: add tests
 
 module.exports.registerHandler = async (request, h) => {
     const userData = getUserData(request.payload);
