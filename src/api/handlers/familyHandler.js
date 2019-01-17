@@ -1,7 +1,7 @@
 const Boom = require('boom');
 const uuid = require('uuid/v1');
 
-const { Family } = require('../../database/models');
+const { Family, Person } = require('../../database/models');
 
 const addNewFamily = async (familyData) => (
     new Family(familyData)
@@ -56,7 +56,13 @@ const removeHandler = async (req, h) => {
     const { familyId } = req.pre.family;
 
     try {
-        await Family.find({ familyId: familyId}).deleteOne();
+        const { people } = await Family.findOne({ familyId: familyId });
+
+        people.forEach(async personId => {
+            await Person.findOne({ personId }).deleteOne();
+        });
+
+        await Family.findOne({ familyId }).deleteOne();
 
         return h.response({
             statusCode: 200,
@@ -71,7 +77,7 @@ const listHandler = async (req, h) => {
     const { userId } = req.pre.user;
 
     try {
-        const families = await Family.find({owner: userId});
+        const families = await Family.find({ owner: userId });
 
         return h.response({
             statusCode: 200,

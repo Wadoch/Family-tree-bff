@@ -7,9 +7,9 @@ const {
 const {
     verifyFamilyExist,
     checkFamilyNameIsAvailable,
-} = require('../../utils/familyValidation');
+} = require('../validators/familyValidation');
 const { errorSchema } = require('../schemas');
-const { verifyJWT } = require('../../utils/userValidationFunctions');
+const { verifyJWT } = require('../validators/userValidationFunctions');
 
 module.exports = [
     {
@@ -70,7 +70,7 @@ module.exports = [
             }
         }
     }, {
-        method: 'POST',
+        method: 'GET',
         path: '/family/list',
         config: {
             description: 'Get all user family',
@@ -87,8 +87,8 @@ module.exports = [
                 }
             }
         }
-    }, {
-        method: 'POST',
+    }, {    // TODO: add /family/get with all people details
+        method: 'GET',
         path: '/family/get',
         config: {
             description: 'Get single family',

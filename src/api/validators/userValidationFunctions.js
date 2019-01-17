@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 const config = require('config');
 
-const { User } = require('../database/models');
-const { decryptAuthPassword } = require('./crypto');
+const { User } = require('../../database/models');
+const { decryptAuthPassword } = require('../../utils/crypto');
 
 const decryptPassword = (req) => decryptAuthPassword(req.payload.password);
 

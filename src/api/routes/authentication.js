@@ -5,7 +5,7 @@ const {
     verifyCredentials,
     decryptPassword,
     verifyJWT,
-} = require('../../utils/userValidationFunctions');
+} = require('../validators/userValidationFunctions');
 
 module.exports = [
     {

@@ -1,5 +1,5 @@
 const Boom = require('boom');
-const { Family } = require('../database/models');
+const { Family } = require('../../database/models');
 
 const verifyFamilyExist = async (req) => {
     const { userId } = req.pre.user;

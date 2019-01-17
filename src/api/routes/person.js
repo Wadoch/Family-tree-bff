@@ -1,27 +1,27 @@
 const {
     addHandler,
-    editHandler,
+    getHandler,
     removeHandler,
     listHandler,
-} = require('../handlers/familyHandler');
+} = require('../handlers/personHandler');
 const {
-    verifyFamilyExist,
-    checkFamilyNameIsAvailable,
-} = require('../../utils/familyValidation');
+    verifyPersonExist,
+    parsePerson,
+} = require('../validators/personValidation');
 const { errorSchema } = require('../schemas');
-const { verifyJWT } = require('../../utils/userValidationFunctions');
+const { verifyJWT } = require('../validators/userValidationFunctions');
 
 module.exports = [
     {
         method: 'POST',
-        path: '/family/add',
+        path: '/person/add',
         config: {
-            description: 'Add new family',
-            notes: 'Add new family',
+            description: 'Add new person',
+            notes: 'Add new person',
             auth: 'jwt',
             pre: [
                 { method: verifyJWT, assign: 'user' },
-                { method: checkFamilyNameIsAvailable, assign: 'familyName' }
+                { method: parsePerson, assign: 'parsePerson' },
             ],
             handler: addHandler,
             response: {
@@ -31,35 +31,17 @@ module.exports = [
                 }
             }
         }
-    }, {
+    },
+    {
         method: 'POST',
-        path: '/family/edit',
+        path: '/person/remove',
         config: {
-            description: 'Edit existing family',
-            notes: 'Edit existing family',
+            description: 'Remove existing person',
+            notes: 'Remove existing person',
             auth: 'jwt',
             pre: [
                 { method: verifyJWT, assign: 'user' },
-                { method: verifyFamilyExist, assign: 'family' }
-            ],
-            handler: editHandler,
-            response: {
-                status: {
-                    400: errorSchema,
-                    500: errorSchema,
-                }
-            }
-        }
-    }, {
-        method: 'POST',
-        path: '/family/remove',
-        config: {
-            description: 'Remove existing family',
-            notes: 'Remove existing family',
-            auth: 'jwt',
-            pre: [
-                { method: verifyJWT, assign: 'user' },
-                { method: verifyFamilyExist, assign: 'family' }
+                { method: verifyPersonExist, assign: 'person' }
             ],
             handler: removeHandler,
             response: {
@@ -69,17 +51,19 @@ module.exports = [
                 }
             }
         }
-    }, {
+    },
+    {
         method: 'POST',
-        path: '/family/list',
+        path: '/person/get',
         config: {
-            description: 'Get all user family',
-            notes: 'Get all user family',
+            description: 'Get single person',
+            notes: 'Get single person',
             auth: 'jwt',
             pre: [
-                { method: verifyJWT, assign: 'user' }
+                { method: verifyJWT, assign: 'user' },
+                { method: verifyPersonExist, assign: 'person' }
             ],
-            handler: listHandler,
+            handler: getHandler,
             response: {
                 status: {
                     400: errorSchema,
@@ -87,12 +71,13 @@ module.exports = [
                 }
             }
         }
-    }, {
-        method: 'POST',
-        path: '/family/get',
+    },
+    {
+        method: 'GET',
+        path: '/person/listAll',
         config: {
-            description: 'Get single family',
-            notes: 'Get single family',
+            description: 'Get all people per user',
+            notes: 'Get all people per user',
             auth: 'jwt',
             pre: [
                 { method: verifyJWT, assign: 'user' }
