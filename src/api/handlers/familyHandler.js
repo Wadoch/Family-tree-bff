@@ -90,8 +90,46 @@ const listHandler = async (req, h) => {
     }
 };
 
+const getHandler = async (req, h) => {
+    const family = req.pre.family;
+    const enrichedFamily = family;
+
+
+    try {
+        const people = family.people.map(async personId => await Person.findOne({ personId }));
+
+        return Promise.all(people)
+            .then(data => {
+                return h.response({
+                    statusCode: 200,
+                    data: {
+                        family: {
+                            people: data,
+                            name: enrichedFamily.name,
+                            familyId: enrichedFamily.familyId,
+                            owner: enrichedFamily.owner,
+                            createdData: enrichedFamily.createdData,
+                        },
+                    }
+                });
+
+            });
+
+        // console.log(enrichedFamily);
+        // return h.response({
+        //     statusCode: 200,
+        //     data: {
+        //         family: enrichedFamily,
+        //     }
+        // });
+
+    } catch (err) {
+        return Boom.badRequest(err);
+    }
+};
 
 module.exports.addHandler = addHandler;
 module.exports.editHandler = editHandler;
 module.exports.removeHandler = removeHandler;
 module.exports.listHandler = listHandler;
+module.exports.getHandler = getHandler;

@@ -3,6 +3,7 @@ const {
     editHandler,
     removeHandler,
     listHandler,
+    getHandler,
 } = require('../handlers/familyHandler');
 const {
     verifyFamilyExist,
@@ -87,17 +88,18 @@ module.exports = [
                 }
             }
         }
-    }, {    // TODO: add /family/get with all people details
-        method: 'GET',
+    }, {
+        method: 'POST',
         path: '/family/get',
         config: {
             description: 'Get single family',
             notes: 'Get single family',
             auth: 'jwt',
             pre: [
-                { method: verifyJWT, assign: 'user' }
+                { method: verifyJWT, assign: 'user' },
+                { method: verifyFamilyExist, assign: 'family' }
             ],
-            handler: listHandler,
+            handler: getHandler,
             response: {
                 status: {
                     400: errorSchema,
