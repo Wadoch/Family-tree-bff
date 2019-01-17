@@ -114,15 +114,6 @@ const getHandler = async (req, h) => {
                 });
 
             });
-
-        // console.log(enrichedFamily);
-        // return h.response({
-        //     statusCode: 200,
-        //     data: {
-        //         family: enrichedFamily,
-        //     }
-        // });
-
     } catch (err) {
         return Boom.badRequest(err);
     }
