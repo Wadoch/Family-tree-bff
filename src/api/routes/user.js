@@ -23,3 +23,14 @@ module.exports = [
         }
     }
 ];
+
+// TODO: add person & family to db
+// TODO: handle routes per user:
+//  /family/add
+//  /family/remove
+//  /family/list (arr of people from family, num of people)
+//  /family/edit - in the future
+//  /person/add
+//  /person/remove
+//  /person/get (return all info - like /me)
+//  /person/edit
