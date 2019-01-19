@@ -21,11 +21,32 @@ const addHandler = async (req, h) => {
     const personData = {
         personId: personId,
         owner: userId,
-        familyId: familyId,
+        familyId,
         ...parsedPersonDetails
     };
 
     try {
+        const relationType = Object.keys(parsedPersonDetails.relationship)[0];
+        const rel = await Person.findOne({ personId: parsedPersonDetails.relationship[relationType] });
+
+        if(relationType === 'partner') {
+            rel.relationship[relationType] = personId;
+
+            await rel.save();
+        }
+        else if(relationType === 'parents') {
+            const relPartnerId = rel.relationship.partner;
+            const relPartner = await Person.findOne({personId: relPartnerId});
+
+            rel.relationship.children.push(personId);
+            relPartner.relationship.children.push(personId);
+            personData.relationship.parents.push(relPartnerId);
+
+            await relPartner.save();
+            await rel.save();
+
+        }
+
         const { familyId } = await addNewPerson(personData);
 
         const family = await Family.findOne({ familyId });
@@ -50,6 +71,36 @@ const removeHandler = async (req, h) => {
         const person = await Person.findOne({ personId });
         const family = await Family.findOne({ familyId: person.familyId});
 
+        const keys = Object.keys(person.relationship);
+        let num = 0;
+
+        keys.forEach(e => {
+            if(Array.isArray(person.relationship[e]) && person.relationship[e].length > 0) {
+                num++;
+            }
+            else if (typeof person.relationship[e] === 'string' && person.relationship[e] !== '') {
+                num++;
+            }
+        });
+
+        if(num > 1) {
+            throw new Error('can\'t remove this person');
+        }
+
+        if(person.relationship.parents.length > 0) {
+            person.relationship.parents.forEach(async e => {
+                const rel = await Person.findOne({ personId: e });
+                rel.relationship.children = rel.relationship.children.filter(child => child !== personId);
+                await rel.save();
+            });
+        }
+
+        if(person.relationship.partner !== '') {
+            const rel = await Person.findOne({ personId: person.relationship.partner });
+            rel.relationship.partner = '';
+            await rel.save();
+        }
+
         if(family) {
             family.people = family.people.filter((e) =>  e !== personId);
             await family.save();
@@ -59,7 +110,8 @@ const removeHandler = async (req, h) => {
 
         return h.response({
             statusCode: 200,
-            data: 'Person successfully removed'
+            message: 'Person successfully removed',
+            data: {familyId: person.familyId},
         })
     } catch (err) {
         return Boom.badRequest(err);

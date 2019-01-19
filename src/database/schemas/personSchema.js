@@ -23,8 +23,7 @@ const personSchema = new Schema({
         additionalInfo: String,
     },
     relationship: {
-        mother: String,
-        father: String,
+        parents: [String],
         children: [String],
         partner: String,
     },
