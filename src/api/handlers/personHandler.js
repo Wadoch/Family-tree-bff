@@ -34,7 +34,8 @@ const addHandler = async (req, h) => {
 
         return h.response({
             statusCode: 200,
-            data: 'Person successfully added'
+            message: 'Person successfully added',
+            data: {familyId},
         });
     } catch(err) {
         await Person.findOne({ personId }).deleteOne();

@@ -19,8 +19,8 @@ const verifyPersonExist = async (req) => {
 const parsePerson = async (req) => {
     const { personDetails, relationship } = req.payload;
 
-    const details = personDetails && { details: JSON.parse(personDetails) };
-    const relationships = relationship && { relationship: JSON.parse(relationship) };
+    const details = personDetails && { details: personDetails };
+    const relationships = relationship && { relationship: relationship };
 
     return {
         ...details,
