@@ -13,28 +13,28 @@ const addNewPerson = async (personData) => (
 );
 
 const addHandler = async (req, h) => {
-    const { familyId } = req.payload;
+    const { familyId, offlineId } = req.payload;
     const { userId } = req.pre.user;
     const parsedPersonDetails = req.pre.parsePerson;
 
-    const personId = uuid();
+    const personId = !offlineId ? uuid() : offlineId;
     const personData = {
+        ...parsedPersonDetails,
         personId: personId,
         owner: userId,
         familyId,
-        ...parsedPersonDetails
     };
 
     try {
         const relationType = Object.keys(parsedPersonDetails.relationship)[0];
         const rel = await Person.findOne({ personId: parsedPersonDetails.relationship[relationType] });
 
-        if(relationType === 'partner') {
+        if(!offlineId && rel && relationType === 'partner') {
             rel.relationship[relationType] = personId;
 
             await rel.save();
         }
-        else if(relationType === 'parents') {
+        else if(!offlineId && rel && relationType === 'parents') {
             const relPartnerId = rel.relationship.partner;
             const relPartner = await Person.findOne({personId: relPartnerId});
 
@@ -59,6 +59,7 @@ const addHandler = async (req, h) => {
             data: {familyId},
         });
     } catch(err) {
+        console.log(err);
         await Person.findOne({ personId }).deleteOne();
         return Boom.badRequest(err);
     }

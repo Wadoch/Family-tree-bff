@@ -15,9 +15,11 @@ const addNewFamily = async (familyData) => (
 const addHandler = async (req, h) => {
     const { userId } = req.pre.user;
     const familyName = req.pre.familyName;
+    const { familyId: fId } = req.payload;
 
+    const familyId = fId ? fId : uuid();
     const familyData = {
-        familyId: uuid(),
+        familyId,
         owner: userId,
         name: familyName,
     };
@@ -27,7 +29,10 @@ const addHandler = async (req, h) => {
 
         return h.response({
             statusCode: 200,
-            data: 'Family successfully added'
+            message: 'Family successfully added',
+            data: {
+                familyId,
+            }
         });
     } catch(err) {
         return Boom.badRequest(err);
