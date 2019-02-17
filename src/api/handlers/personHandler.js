@@ -13,11 +13,11 @@ const addNewPerson = async (personData) => (
 );
 
 const addHandler = async (req, h) => {
-    const { familyId, offlineId } = req.payload;
+    const { familyId } = req.payload;
     const { userId } = req.pre.user;
     const parsedPersonDetails = req.pre.parsePerson;
 
-    const personId = !offlineId ? uuid() : offlineId;
+    const personId = uuid();
     const personData = {
         ...parsedPersonDetails,
         personId: personId,
@@ -29,12 +29,12 @@ const addHandler = async (req, h) => {
         const relationType = Object.keys(parsedPersonDetails.relationship)[0];
         const rel = await Person.findOne({ personId: parsedPersonDetails.relationship[relationType] });
 
-        if(!offlineId && rel && relationType === 'partner') {
+        if(rel && relationType === 'partner') {
             rel.relationship[relationType] = personId;
 
             await rel.save();
         }
-        else if(!offlineId && rel && relationType === 'parents') {
+        else if(rel && relationType === 'parents') {
             const relPartnerId = rel.relationship.partner;
             const relPartner = await Person.findOne({personId: relPartnerId});
 

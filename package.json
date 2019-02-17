@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "nodemon $NODE_DEBUG_OPTION server.js",
-        "database": "mongod --dbpath=../family-tree-database",
+        "database": "mongod --dbpath=../Family-tree-database",
         "test": "echo \"Error: no test specified\" && exit 0"
     },
     "repository": {

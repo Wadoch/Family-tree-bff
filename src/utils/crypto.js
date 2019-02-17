@@ -9,5 +9,5 @@ const decryptData = (data, hashKey) => {
 };
 
 module.exports.decryptAuthPassword = (password) => decryptData(password, config.get('decryptUserData.key'));
-module.exports.hashPassword = (password) => (bcrypt.hashSync(password, 10));
+module.exports.hashPassword = (password) => (bcrypt.hashSync( decryptData(password, config.get('decryptUserData.key')), 10));
 
